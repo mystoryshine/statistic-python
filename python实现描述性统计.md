@@ -1,0 +1,154 @@
+### python实现描述性统计
+
+- #### 导入python库和样例数据
+
+  ```python
+  import numpy as np
+  import pandas as pd
+  
+  data = pd.read_excel('实践一.xlsx')
+  data.head()
+  data.info()
+  ```
+
+  ![](https://tva1.sinaimg.cn/large/006y8mN6ly1g91btfl25tj30ig0fsmyd.jpg)
+
+- #### 集中趋势
+
+  - 众数
+
+    ```python
+    data = data['data']
+    mode = data.mode()[0]
+    print('众数：',mode)
+    ```
+
+    > 众数： 1
+
+  
+
+  - 中位数与分位数
+
+    ```python
+    m_0 = data.median()
+    m_1 = data.quantile(q=0.25)    #四分位数
+    print('中位数：',m_0)
+    print('四分位数：',m_1)
+    ```
+
+    > ```
+    > 中位数： 4.0
+    > 四分位数： 2.0
+    > ```
+
+  - 平均数
+
+    ```python
+    mean = data.mean()
+    print('平均数：',mean)
+    ```
+
+    > ```
+    > 平均数： 4.417739628040057
+    > ```
+
+- #### 离散趋势
+
+  - 四分位差
+
+    ```python
+    qd = data.quantile(q=0.75) - data.quantile(q=0.25)
+    print('四分位差：',qd)
+    ```
+
+    > ```
+    > 四分位差： 4.0
+    > ```
+
+  - 极差
+
+    ```python
+    R = data.max() - data.min()
+    print('极差：',R)
+    ```
+
+    > ```
+    > 极差： 9
+    > ```
+
+  - 平均差
+
+    ```python
+    data = data['data']
+    m_d = (data - data.mean()).apply(lambda x: x if x >0 else -x).sum()
+    print('平均差：',m_d)
+    ```
+
+    > ```
+    > 平均差： 1605.988555078684
+    > ```
+
+  - 方差/标准差
+
+    ```python
+    var = data.var()
+    std = data.std()
+    print('方差：',var)
+    print('标准差：',std)
+    ```
+
+    > ```
+    > 方差： 7.928395456464613
+    > 标准差： 2.8157406585949305
+    > ```
+
+  - 标准分数
+
+    ```python
+    z_score = (data - data.mean()) / data.std()
+    z_score.head()
+    ```
+
+    > ```
+    > 0    0.206788
+    > 1    0.206788
+    > 2   -0.503505
+    > 3    0.561934
+    > 4   -0.148359
+    > Name: data, dtype: float64
+    > ```
+
+  - 离散系数
+
+    ```python
+    v_s = data.var() / data.mean()
+    print('离散系数：',v_s)
+    ```
+
+    > ```
+    > 离散系数： 1.7946724171207138
+    > ```
+
+- #### 偏态与峰态
+
+  - 偏态系数
+
+    ```python
+    skew = data.skew()
+    print('偏度系数：',skew)
+    ```
+
+    > ```
+    > 偏度系数： 0.5928585326862844
+    > ```
+
+  - 峰态系数
+
+    ```python
+    kurt = data.kurt()
+    print('峰度系数：',kurt)
+    ```
+
+    > ```
+    > 峰度系数： -0.6237154123264794
+    > ```
